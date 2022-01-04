@@ -1,9 +1,12 @@
 const generatePage = require("./src/page-template");
+
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
-const fs = require("fs");
+
 const inquirer = require("inquirer");
+
+const {writeFile, copyFile} = require('./utils/generate-site.js')
 
 const team = [];
 
@@ -61,7 +64,13 @@ const promptUser = () => {
         }
       },
     },
-  ]);
+  ]).then(answers => {
+    const { name, id, email, officeNumber } = answers;
+    const manager = new Manager(name, id, email, officeNumber);
+  
+    team.push(manager);
+    console.log(manager);
+  });
 };
 
 const promptEmployee = () => {
@@ -149,19 +158,7 @@ const promptEmployee = () => {
       message: "Would you like to add more team members?",
       default: false,
     },
-  ]);
-};
-
-promptUser()
-.then((answers) => {
-  const { name, id, email, officeNumber } = answers;
-  const manager = new Manager(name, id, email, officeNumber);
-
-  team.push(manager);
-  console.log(manager);
-})
-.then(promptEmployee)
-.then(answers => {
+  ]).then(answers => {
     let {name, id, email, role, username, school, confirmAddEmployee} = answers;
     let employee
     
@@ -182,4 +179,26 @@ promptUser()
     }else {
         return team
     }
-});
+  });
+};
+
+promptUser()
+.then(promptEmployee)
+.then(generateData => {
+  return generatePage(generateData)
+})
+.then(pageHTML => {
+  return writeFile(pageHTML)
+})
+.then(writeFileResponse => {
+  console.log(writeFileResponse)
+  return copyFile();
+})
+.then(copyFileResponse => {
+  console.log(copyFileResponse)
+})
+.catch(err => {
+  console.log(err)
+})
+
+ 
