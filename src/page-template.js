@@ -75,26 +75,20 @@ const generateManager = function (manager) {
     let teamArr = []
 
     templateData.forEach((employee) => {
+      switch(employee.getRole()){
+        case "Manager":
+          teamArr.push(generateManager(employee))
+          break;
+        case "Engineer":
+          teamArr.push( generateEngineer(employee))
+          break;
+        case "Intern":
+          teamArr.push(generateIntern(employee))
+          break;
+      }
       
-      const role = employee.getRole();
-
-      if(role === 'Manager'){
-        const managerCard = generateManager(employee)
-        teamArr.push(managerCard)
-      }
-  
-      if(role === 'Engineer'){
-        const engineerCard = generateEngineer(employee)
-        teamArr.push(engineerCard)
-      }
-  
-      if(role === 'Intern'){
-        const internCard = generateIntern(employee)
-        teamArr.push(internCard)
-      }
     });
 
-    console.log(teamArr)
   
     const employeeCards = teamArr.join('')
   
