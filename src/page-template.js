@@ -13,7 +13,7 @@ const generateManager = function (manager) {
         <p class="card-text">
           <ul>
             <li>ID: ${manager.id}</li>
-            <li>Email: ${manager.email}</li>
+            <li>Email: <a href="mailto:${manager.email}">${manager.email}</a></li>
             <li>Office number: ${manager.officeNumber}</li>
           </ul>
         </p>
@@ -37,8 +37,8 @@ const generateManager = function (manager) {
       <p class="card-text">
       <ul>
         <li>ID: ${engineer.id}</li>
-        <li>Email: ${engineer.email}</li>
-        <li>Github: ${engineer.username}</li>
+        <li>Email: <a href="mailto:${engineer.email}">${engineer.email}</a></li>
+        <li>Github: <a href="https://github.com/${engineer.username}">${engineer.username}</a></li>
       </ul>
       </p>
     </div>
@@ -61,7 +61,7 @@ const generateManager = function (manager) {
       <p class="card-text">
         <ul>
           <li>ID: ${intern.id}</li>
-          <li>Email: ${intern.email}</li>
+          <li>Email: <a href="mailto:${intern.email}">${intern.email}</a></li>
           <li>School: ${intern.school}</li>
         </ul>
       </p>
@@ -71,11 +71,13 @@ const generateManager = function (manager) {
   }
   
   const generatePage = function (templateData) {
-    let teamArr = [];
+
+    let teamArr = []
+
     templateData.forEach((employee) => {
+      
       const role = employee.getRole();
-      console.log(role);
-  
+
       if(role === 'Manager'){
         const managerCard = generateManager(employee)
         teamArr.push(managerCard)
@@ -91,6 +93,8 @@ const generateManager = function (manager) {
         teamArr.push(internCard)
       }
     });
+
+    console.log(teamArr)
   
     const employeeCards = teamArr.join('')
   
